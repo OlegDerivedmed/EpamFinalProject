@@ -4,7 +4,6 @@ import com.derivedmed.proj.util.annotations.Column;
 import com.derivedmed.proj.util.annotations.Model;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.InaccessibleObjectException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -23,7 +22,7 @@ public class ResultSetParser {
         ArrayList<Object> result = new ArrayList<>();
         Object obj = cl.newInstance();
         if (!cl.isAnnotationPresent(Model.class)) {
-            throw new InaccessibleObjectException();
+            throw new IllegalAccessException();
         }
         while (rs.next()) {
             for (Field f : cl.getDeclaredFields()) {

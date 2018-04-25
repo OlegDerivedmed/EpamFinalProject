@@ -25,7 +25,7 @@ create table reports
 (
    report_id            int not null,
    conf_id              int not null,
-   user_id              int not null,
+   user_id              int ,
    report_name          varchar(22) not null,
    report_desk          varchar(255) not null,
    is_offered           bool,

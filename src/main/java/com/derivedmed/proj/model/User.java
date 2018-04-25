@@ -3,6 +3,8 @@ package com.derivedmed.proj.model;
 import com.derivedmed.proj.util.annotations.Column;
 import com.derivedmed.proj.util.annotations.Model;
 
+import java.util.Objects;
+
 @Model
 public class User {
 
@@ -19,6 +21,22 @@ public class User {
     private String password;
 
     public User() {
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setRole_id(int role_id) {
+        this.role_id = role_id;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public User(int id, int role_id, String email, String password) {
@@ -42,6 +60,23 @@ public class User {
 
     public String getPassword() {
         return password;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof User)) return false;
+        User user = (User) o;
+        return id == user.id &&
+                role_id == user.role_id &&
+                Objects.equals(email, user.email) &&
+                Objects.equals(password, user.password);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(id, role_id, email, password);
     }
 
     @Override

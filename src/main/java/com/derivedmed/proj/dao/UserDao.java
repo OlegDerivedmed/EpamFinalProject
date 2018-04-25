@@ -36,11 +36,7 @@ public class UserDao implements CrudDao<User> {
                      .prepareStatement(SQL)) {
             preparedStatement.setInt(1, id);
             user = (User) ResultSetParser.getInstance().parse(preparedStatement.executeQuery(), User.class);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InstantiationException e) {
+        } catch (SQLException | IllegalAccessException | InstantiationException e) {
             e.printStackTrace();
         }
         return user;
@@ -48,7 +44,19 @@ public class UserDao implements CrudDao<User> {
 
     @Override
     public boolean update(User user) {
-        return create(user);
+        String SQL = "UPDATE users SET email = ?, password = ?, role_id = ? WHERE user_id = ?";
+        try (ConnectionProxy connection = TransactionManager.getInstance().getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(SQL)) {
+
+            preparedStatement.setString(1, user.getEmail());
+            preparedStatement.setString(2, user.getPassword());
+            preparedStatement.setInt(3, user.getRole_id());
+            preparedStatement.setInt(4, user.getId());
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            return false;
+        }
+        return true;
     }
 
     @Override
@@ -57,11 +65,11 @@ public class UserDao implements CrudDao<User> {
              PreparedStatement preparedStatement = connectionProxy.prepareStatement("delete from users where user_id =?")) {
             preparedStatement.setInt(1,id);
             preparedStatement.executeUpdate();
-            return true;
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
         }
-        return false;
+        return true;
     }
 
     @Override

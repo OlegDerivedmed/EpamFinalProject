@@ -1,8 +1,6 @@
 package com.derivedmed.proj.factory;
 
-import com.derivedmed.proj.services.ProxyService;
-import com.derivedmed.proj.services.UserService;
-import com.derivedmed.proj.services.UserServiceImpl;
+import com.derivedmed.proj.services.*;
 import com.derivedmed.proj.util.annotations.Transactional;
 
 import java.lang.reflect.Method;
@@ -24,6 +22,22 @@ public class ServiceFactory {
             return userServ.getProxy();
         } else {
             return UserServiceImpl.getInstance();
+        }
+    }
+    public ConfService getConfService() {
+        if (checkForTransactional(ConfService.class)) {
+            ProxyService<ConfService> userServ = new ProxyService<>(ConfServiceImpl.getInstance());
+            return userServ.getProxy();
+        } else {
+            return ConfServiceImpl.getInstance();
+        }
+    }
+    public ReportService getReportService() {
+        if (checkForTransactional(ReportService.class)) {
+            ProxyService<ReportService> userServ = new ProxyService<>(ReportServiceImpl.getInstance());
+            return userServ.getProxy();
+        } else {
+            return ReportServiceImpl.getInstance();
         }
     }
 

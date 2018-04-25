@@ -1,9 +1,12 @@
 package com.derivedmed.proj.dao;
 
 import com.derivedmed.proj.model.Conf;
+import com.derivedmed.proj.util.ResultSetParser;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ConfDao implements CrudDao<Conf> {
@@ -27,26 +30,70 @@ public class ConfDao implements CrudDao<Conf> {
 
     @Override
     public Conf get(int id) {
-        return null;
+        Conf conf = new Conf();
+        String SQL = "SELECT * from confs where conf_id = ?";
+        try (ConnectionProxy connectionProxy = TransactionManager.getInstance().getConnection();
+             PreparedStatement preparedStatement = connectionProxy
+                     .prepareStatement(SQL)) {
+            preparedStatement.setInt(1, id);
+            conf = (Conf) ResultSetParser.getInstance().parse(preparedStatement.executeQuery(), Conf.class);
+        } catch (SQLException | IllegalAccessException | InstantiationException e) {
+            e.printStackTrace();
+        }
+        return conf;
     }
 
     @Override
     public boolean update(Conf conf) {
-        return false;
+        try (ConnectionProxy connectionProxy = TransactionManager.getInstance().getConnection();
+             PreparedStatement preparedStatement = connectionProxy
+                     .prepareStatement("UPDATE confs SET conf_name = ?, conf_place = ?, conf_date = ? where conf_id = ?")) {
+            preparedStatement.setString(1,conf.getName());
+            preparedStatement.setString(2,conf.getPlace());
+            preparedStatement.setTimestamp(3,conf.getDate());
+            preparedStatement.setInt(4,conf.getId());
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
     }
 
     @Override
     public boolean delete(int id) {
-        return false;
+        try (ConnectionProxy connectionProxy = TransactionManager.getInstance().getConnection();
+             PreparedStatement preparedStatement = connectionProxy.prepareStatement("delete from confs where conf_id =?")) {
+            preparedStatement.setInt(1,id);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
     }
 
     @Override
     public List<Conf> getAll() {
-        return null;
+        ArrayList<Conf> resultList = new ArrayList<>();
+        try (ConnectionProxy connectionProxy = TransactionManager.getInstance().getConnection();
+             PreparedStatement preparedStatement = connectionProxy.prepareStatement("select * from confs")){
+            resultList = (ArrayList<Conf>) ResultSetParser.getInstance().parse(preparedStatement.executeQuery(),Conf.class);
+        } catch (SQLException | IllegalAccessException | InstantiationException e) {
+            e.printStackTrace();
+        }
+        return resultList;
     }
 
     @Override
     public boolean clearAll() {
-        return false;
+        try(ConnectionProxy connectionProxy = TransactionManager.getInstance().getConnection();
+            Statement statement = connectionProxy.createStatement()) {
+            statement.executeUpdate("DELETE FROM confs");
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
     }
 }
