@@ -3,6 +3,7 @@ package com.derivedmed.proj.model;
 import com.derivedmed.proj.util.annotations.Column;
 import com.derivedmed.proj.util.annotations.Model;
 
+import java.util.List;
 import java.util.Objects;
 
 @Model
@@ -20,46 +21,80 @@ public class User {
     @Column(name = "password")
     private String password;
 
+    @Column(name = "rating")
+    private int rating;
+
+    private List<Report> reportList;
+
     public User() {
     }
 
-    public void setId(int id) {
+    public User(int id, int role_id, String email, String password, int rating) {
         this.id = id;
-    }
-
-    public void setRole_id(int role_id) {
         this.role_id = role_id;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public User(int id, int role_id, String email, String password) {
-        this.id = id;
         this.email = email;
         this.password = password;
-        this.role_id = role_id;
-    }
-
-    public int getRole_id() {
-        return role_id;
+        this.rating = rating;
     }
 
     public int getId() {
         return id;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getRole_id() {
+        return role_id;
+    }
+
+    public void setRole_id(int role_id) {
+        this.role_id = role_id;
+    }
+
     public String getEmail() {
         return email;
     }
 
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     public String getPassword() {
         return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public int getRating() {
+        return rating;
+    }
+
+    public void setRating(int rating) {
+        this.rating = rating;
+    }
+
+    public List<Report> getReportList() {
+        return reportList;
+    }
+
+    public void setReportList(List<Report> reportList) {
+        this.reportList = reportList;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", role_id=" + role_id +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", rating=" + rating +
+                ", reportList=" + reportList +
+                '}';
     }
 
     @Override
@@ -69,23 +104,15 @@ public class User {
         User user = (User) o;
         return id == user.id &&
                 role_id == user.role_id &&
+                rating == user.rating &&
                 Objects.equals(email, user.email) &&
-                Objects.equals(password, user.password);
+                Objects.equals(password, user.password) &&
+                Objects.equals(reportList, user.reportList);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(id, role_id, email, password);
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", role_id=" + role_id +
-                '}';
+        return Objects.hash(id, role_id, email, password, rating, reportList);
     }
 }

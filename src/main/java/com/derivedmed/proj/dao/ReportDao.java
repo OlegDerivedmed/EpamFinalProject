@@ -1,12 +1,15 @@
 package com.derivedmed.proj.dao;
 
 import com.derivedmed.proj.model.Report;
-import com.derivedmed.proj.util.ResultSetParser;
+import com.derivedmed.proj.rsparser.ResultSetParser;
 
+import java.lang.reflect.InvocationTargetException;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class ReportDao implements CrudDao<Report> {
@@ -29,7 +32,7 @@ public class ReportDao implements CrudDao<Report> {
     }
 
     @Override
-    public Report get(int id) {
+    public Report get(int id) throws NoSuchMethodException, InvocationTargetException {
         Report report = new Report();
         String SQL = "SELECT * from reports where report_id = ?";
         try (ConnectionProxy connectionProxy = TransactionManager.getInstance().getConnection();
@@ -74,7 +77,7 @@ public class ReportDao implements CrudDao<Report> {
     }
 
     @Override
-    public List<Report> getAll() {
+    public List<Report> getAll() throws NoSuchMethodException, InvocationTargetException {
         ArrayList<Report> resultList = new ArrayList<>();
         try (ConnectionProxy connectionProxy = TransactionManager.getInstance().getConnection();
              PreparedStatement preparedStatement = connectionProxy.prepareStatement("select * from reports")){
@@ -96,4 +99,64 @@ public class ReportDao implements CrudDao<Report> {
         }
         return true;
     }
+
+    public List<Report> getReportsByUserId(int id){
+        ArrayList<Report> reports = new ArrayList<>();
+        try (ConnectionProxy connectionProxy = TransactionManager.getInstance().getConnection();
+             PreparedStatement preparedStatement = connectionProxy.prepareStatement("SELECT reports.report_id,conf_id, report_name,report_desk FROM reports JOIN users_reports u ON reports.report_id = u.report_id WHERE u.user_id = ?;")) {
+            preparedStatement.setInt(1,id);
+            reports = (ArrayList<Report>) ResultSetParser.getInstance().parse(preparedStatement.executeQuery(),Report.class);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        }
+        return reports;
+    }
+    public List<Report> getPastReports(){
+        ArrayList<Report> reports = new ArrayList<>();
+        try (ConnectionProxy connectionProxy = TransactionManager.getInstance().getConnection();
+             PreparedStatement preparedStatement = connectionProxy.prepareStatement("SELECT reports.report_id,conf_id, report_name,report_desk FROM reports JOIN confs c ON reports.conf_id = c.conf_id WHERE c.conf_date < ?;")) {
+            preparedStatement.setTimestamp(1, new Timestamp(new Date().getTime()));
+            reports = (ArrayList<Report>) ResultSetParser.getInstance().parse(preparedStatement.executeQuery(),Report.class);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        }
+        return reports;
+    }
+    public List<Report> getUpcomingReports(){
+        ArrayList<Report> reports = new ArrayList<>();
+        try (ConnectionProxy connectionProxy = TransactionManager.getInstance().getConnection();
+             PreparedStatement preparedStatement = connectionProxy.prepareStatement("SELECT reports.report_id,conf_id, report_name,report_desk FROM reports JOIN confs c ON reports.conf_id = c.conf_id WHERE c.conf_date > ?;")) {
+            preparedStatement.setTimestamp(1, new Timestamp(new Date().getTime()));
+            reports = (ArrayList<Report>) ResultSetParser.getInstance().parse(preparedStatement.executeQuery(),Report.class);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        }
+        return reports;
+    }
+
+
 }

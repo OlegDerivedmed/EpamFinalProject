@@ -1,8 +1,9 @@
 package com.derivedmed.proj.dao;
 
 import com.derivedmed.proj.model.Conf;
-import com.derivedmed.proj.util.ResultSetParser;
+import com.derivedmed.proj.rsparser.ResultSetParser;
 
+import java.lang.reflect.InvocationTargetException;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -29,7 +30,7 @@ public class ConfDao implements CrudDao<Conf> {
     }
 
     @Override
-    public Conf get(int id) {
+    public Conf get(int id) throws NoSuchMethodException, InvocationTargetException {
         Conf conf = new Conf();
         String SQL = "SELECT * from confs where conf_id = ?";
         try (ConnectionProxy connectionProxy = TransactionManager.getInstance().getConnection();
@@ -74,7 +75,7 @@ public class ConfDao implements CrudDao<Conf> {
     }
 
     @Override
-    public List<Conf> getAll() {
+    public List<Conf> getAll() throws NoSuchMethodException, InvocationTargetException {
         ArrayList<Conf> resultList = new ArrayList<>();
         try (ConnectionProxy connectionProxy = TransactionManager.getInstance().getConnection();
              PreparedStatement preparedStatement = connectionProxy.prepareStatement("select * from confs")){

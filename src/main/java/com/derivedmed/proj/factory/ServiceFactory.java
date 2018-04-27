@@ -1,9 +1,16 @@
 package com.derivedmed.proj.factory;
 
-import com.derivedmed.proj.services.*;
+
+import com.derivedmed.proj.services.ConfService;
+import com.derivedmed.proj.services.ConfServiceImpl;
+import com.derivedmed.proj.services.ProxyService;
+import com.derivedmed.proj.services.ReportService;
+import com.derivedmed.proj.services.ReportServiceImpl;
+import com.derivedmed.proj.services.UserService;
+import com.derivedmed.proj.services.UserServiceImpl;
 import com.derivedmed.proj.util.annotations.Transactional;
 
-import java.lang.reflect.Method;
+import java.util.Arrays;
 
 public class ServiceFactory {
 
@@ -17,7 +24,7 @@ public class ServiceFactory {
     }
 
     public UserService getUserService() {
-        if (checkForTransactional(UserService.class)) {
+        if (isTransactional(UserService.class)) {
             ProxyService<UserService> userServ = new ProxyService<>(UserServiceImpl.getInstance());
             return userServ.getProxy();
         } else {
@@ -25,7 +32,7 @@ public class ServiceFactory {
         }
     }
     public ConfService getConfService() {
-        if (checkForTransactional(ConfService.class)) {
+        if (isTransactional(ConfService.class)) {
             ProxyService<ConfService> userServ = new ProxyService<>(ConfServiceImpl.getInstance());
             return userServ.getProxy();
         } else {
@@ -33,7 +40,7 @@ public class ServiceFactory {
         }
     }
     public ReportService getReportService() {
-        if (checkForTransactional(ReportService.class)) {
+        if (isTransactional(ReportService.class)) {
             ProxyService<ReportService> userServ = new ProxyService<>(ReportServiceImpl.getInstance());
             return userServ.getProxy();
         } else {
@@ -41,13 +48,7 @@ public class ServiceFactory {
         }
     }
 
-    private boolean checkForTransactional(Class cl) {
-        boolean has = false;
-        for (Method m : cl.getMethods()) {
-            if (m.isAnnotationPresent(Transactional.class)) {
-                has = true;
-            }
-        }
-        return has;
+    private boolean isTransactional(Class clazz) {
+        return Arrays.stream(clazz.getMethods()).anyMatch(m->m.isAnnotationPresent(Transactional.class));
     }
 }

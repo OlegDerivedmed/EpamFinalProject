@@ -1,9 +1,9 @@
 package com.derivedmed.proj.dao;
 
 import com.derivedmed.proj.model.User;
-import com.derivedmed.proj.util.ResultSetParser;
-import com.derivedmed.proj.util.annotations.Transactional;
+import com.derivedmed.proj.rsparser.ResultSetParser;
 
+import java.lang.reflect.InvocationTargetException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +28,7 @@ public class UserDao implements CrudDao<User> {
     }
 
     @Override
-    public User get(int id) {
+    public User get(int id) throws NoSuchMethodException, InvocationTargetException {
         User user = new User();
         String SQL = "SELECT * from users where user_id = ?";
         try (ConnectionProxy connectionProxy = TransactionManager.getInstance().getConnection();
@@ -73,7 +73,7 @@ public class UserDao implements CrudDao<User> {
     }
 
     @Override
-    public List<User> getAll() {
+    public List<User> getAll() throws NoSuchMethodException, InvocationTargetException {
         ArrayList<User> resultList = new ArrayList<>();
         try (ConnectionProxy connectionProxy = TransactionManager.getInstance().getConnection();
         PreparedStatement preparedStatement = connectionProxy.prepareStatement("select * from users")){
@@ -94,5 +94,31 @@ public class UserDao implements CrudDao<User> {
             return false;
         }
         return true;
+    }
+
+    public boolean registerUserToReport(int user_id, int report_id){
+        try {
+            try (ConnectionProxy connectionProxy = TransactionManager.getInstance().getConnection();
+                 PreparedStatement preparedStatement = connectionProxy.prepareStatement("insert into users_reports (user_id, report_id) values(?, ?)")){
+                preparedStatement.setInt(1,user_id);
+                preparedStatement.setInt(2,report_id);
+                preparedStatement.executeUpdate();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+    public List<User> getSpeakersByRating() throws NoSuchMethodException, InvocationTargetException {
+        ArrayList<User> resultList = new ArrayList<>();
+        try (ConnectionProxy connectionProxy = TransactionManager.getInstance().getConnection();
+             PreparedStatement preparedStatement = connectionProxy.prepareStatement("select * from users order by rating desc")){
+            resultList = (ArrayList<User>) ResultSetParser.getInstance().parse(preparedStatement.executeQuery(),User.class);
+        } catch (SQLException | IllegalAccessException | InstantiationException e) {
+            e.printStackTrace();
+        }
+        return resultList;
     }
 }

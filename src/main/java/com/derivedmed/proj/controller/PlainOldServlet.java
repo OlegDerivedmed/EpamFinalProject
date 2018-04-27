@@ -15,7 +15,7 @@ import java.io.IOException;
 public class PlainOldServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        RequestDispatcher requestDispatcher = req.getRequestDispatcher("WEB-INF/pages/authorization.jsp");
+        RequestDispatcher requestDispatcher = req.getRequestDispatcher("WEB-INF/pages/main.jsp");
         requestDispatcher.forward(req,resp);
     }
 
