@@ -4,6 +4,8 @@ package com.derivedmed.proj.factory;
 import com.derivedmed.proj.services.ConfService;
 import com.derivedmed.proj.services.ConfServiceImpl;
 import com.derivedmed.proj.services.ProxyService;
+import com.derivedmed.proj.services.RegistrationService;
+import com.derivedmed.proj.services.RegistrationServiceImpl;
 import com.derivedmed.proj.services.ReportService;
 import com.derivedmed.proj.services.ReportServiceImpl;
 import com.derivedmed.proj.services.UserService;
@@ -33,8 +35,8 @@ public class ServiceFactory {
     }
     public ConfService getConfService() {
         if (isTransactional(ConfService.class)) {
-            ProxyService<ConfService> userServ = new ProxyService<>(ConfServiceImpl.getInstance());
-            return userServ.getProxy();
+            ProxyService<ConfService> confServ = new ProxyService<>(ConfServiceImpl.getInstance());
+            return confServ.getProxy();
         } else {
             return ConfServiceImpl.getInstance();
         }
@@ -45,6 +47,14 @@ public class ServiceFactory {
             return userServ.getProxy();
         } else {
             return ReportServiceImpl.getInstance();
+        }
+    }
+    public RegistrationService getRegistrationService() {
+        if (isTransactional(RegistrationService.class)) {
+            ProxyService<RegistrationService> registrationServiceProxyService = new ProxyService<>(RegistrationServiceImpl.getInstance());
+            return registrationServiceProxyService.getProxy();
+        } else {
+            return RegistrationServiceImpl.getInstance();
         }
     }
 

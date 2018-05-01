@@ -77,7 +77,12 @@ public class UserDao implements CrudDao<User> {
         ArrayList<User> resultList = new ArrayList<>();
         try (ConnectionProxy connectionProxy = TransactionManager.getInstance().getConnection();
         PreparedStatement preparedStatement = connectionProxy.prepareStatement("select * from users")){
-            resultList = (ArrayList<User>) ResultSetParser.getInstance().parse(preparedStatement.executeQuery(),User.class);
+            Object parserResult = ResultSetParser.getInstance().parse(preparedStatement.executeQuery(),User.class);
+            if (parserResult instanceof User){
+                resultList.add((User) parserResult);
+            }else {
+                resultList = (ArrayList<User>) parserResult;
+            }
         } catch (SQLException | IllegalAccessException | InstantiationException e) {
             e.printStackTrace();
         }

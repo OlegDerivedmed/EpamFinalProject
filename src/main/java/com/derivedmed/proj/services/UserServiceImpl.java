@@ -23,7 +23,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void createUser(HttpServletRequest req, HttpServletResponse resp) {
-        UserDao userDao = DaoFactory.getUserDao();
+        UserDao userDao = DaoFactory.getInstance().getUserDao();
         String name = req.getParameter("username");
         String password = req.getParameter("password");
         userDao.create(new User(IdGenerator.generateID(), 4, name, password,0));
@@ -36,18 +36,18 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUserByID(int id) throws NoSuchMethodException, InvocationTargetException {
-        UserDao userDao = DaoFactory.getUserDao();
+        UserDao userDao = DaoFactory.getInstance().getUserDao();
         return userDao.get(id);
     }
 
     @Override
     public List<User> getAll() throws NoSuchMethodException, InvocationTargetException {
-        UserDao userDao = DaoFactory.getUserDao();
+        UserDao userDao = DaoFactory.getInstance().getUserDao();
         return userDao.getAll();
     }
 
     @Override
     public boolean clearAll() {
-        return DaoFactory.getUserDao().clearAll();
+        return DaoFactory.getInstance().getUserDao().clearAll();
     }
 }

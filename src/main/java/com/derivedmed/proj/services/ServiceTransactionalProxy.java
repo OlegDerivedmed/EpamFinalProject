@@ -21,9 +21,9 @@ public class ServiceTransactionalProxy implements InvocationHandler {
         if (method.isAnnotationPresent(Transactional.class)) {
             System.out.println("transactional!");
             transactionManager.beginTransaction();
-            method.invoke(object, args);
+            Object result = method.invoke(object, args);
             transactionManager.commit();
-            return null;
+            return result;
         }
         return method.invoke(object, args);
     }

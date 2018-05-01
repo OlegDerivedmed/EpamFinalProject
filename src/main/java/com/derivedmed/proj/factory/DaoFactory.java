@@ -17,15 +17,15 @@ public class DaoFactory {
     private DaoFactory() {
     }
 
-    public static UserDao getUserDao() {
+    public UserDao getUserDao() {
         return userDao;
     }
 
-    public static ConfDao getConfDao() {
+    public ConfDao getConfDao() {
         return confDao;
     }
 
-    public static ReportDao getReportDao() {
+    public ReportDao getReportDao() {
         return reportDao;
     }
 }

@@ -8,7 +8,7 @@ public class ProxyService<T> implements Service{
 
     public ProxyService(Object o) {
         InvocationHandler invocationHandler = new ServiceTransactionalProxy(o);
-        proxy = Proxy.newProxyInstance(Service.class.getClassLoader(), new Class[]{UserService.class}, invocationHandler);
+        proxy = Proxy.newProxyInstance(Service.class.getClassLoader(), new Class[]{UserService.class,ConfService.class,RegistrationService.class,ReportService.class}, invocationHandler);
     }
 
     public T getProxy() {
