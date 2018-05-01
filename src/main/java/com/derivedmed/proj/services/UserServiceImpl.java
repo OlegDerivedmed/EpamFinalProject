@@ -8,13 +8,10 @@ import com.derivedmed.proj.util.IdGenerator;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Proxy;
 import java.util.List;
 
 public class UserServiceImpl implements UserService {
-    private UserDao userDao = DaoFactory.getUserDao();
     private static UserServiceImpl ourInstance = new UserServiceImpl();
 
     public static UserServiceImpl getInstance() {
@@ -26,6 +23,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void createUser(HttpServletRequest req, HttpServletResponse resp) {
+        UserDao userDao = DaoFactory.getUserDao();
         String name = req.getParameter("username");
         String password = req.getParameter("password");
         userDao.create(new User(IdGenerator.generateID(), 4, name, password,0));
@@ -38,16 +36,18 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUserByID(int id) throws NoSuchMethodException, InvocationTargetException {
+        UserDao userDao = DaoFactory.getUserDao();
         return userDao.get(id);
     }
 
     @Override
     public List<User> getAll() throws NoSuchMethodException, InvocationTargetException {
+        UserDao userDao = DaoFactory.getUserDao();
         return userDao.getAll();
     }
 
     @Override
     public boolean clearAll() {
-        return userDao.clearAll();
+        return DaoFactory.getUserDao().clearAll();
     }
 }

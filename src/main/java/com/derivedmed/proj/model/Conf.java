@@ -4,7 +4,6 @@ import com.derivedmed.proj.util.annotations.Column;
 import com.derivedmed.proj.util.annotations.Model;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.Objects;
 
 @Model
@@ -22,57 +21,47 @@ public class Conf {
     @Column(name = "conf_date")
     private Timestamp date;
 
-    private ArrayList<Report> reports;
+
+    public Conf() {
+    }
 
     public Conf(int id, String name, String place, Timestamp date) {
         this.id = id;
         this.name = name;
         this.place = place;
         this.date = date;
-        reports = new ArrayList<>();
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setPlace(String place) {
-        this.place = place;
-    }
-
-    public void setDate(Timestamp date) {
-        this.date = date;
-    }
-
-    public void setReports(ArrayList<Report> reports) {
-        this.reports = reports;
-    }
-
-    public Conf() {
     }
 
     public int getId() {
         return id;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public String getName() {
         return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getPlace() {
         return place;
     }
 
+    public void setPlace(String place) {
+        this.place = place;
+    }
+
     public Timestamp getDate() {
         return date;
     }
 
-    public ArrayList<Report> getReports() {
-        return reports;
+    public void setDate(Timestamp date) {
+        this.date = date;
     }
 
     @Override
@@ -83,14 +72,13 @@ public class Conf {
         return id == conf.id &&
                 Objects.equals(name, conf.name) &&
                 Objects.equals(place, conf.place) &&
-                Objects.equals(date, conf.date) &&
-                Objects.equals(reports, conf.reports);
+                Objects.equals(date, conf.date);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(id, name, place, date, reports);
+        return Objects.hash(id, name, place, date);
     }
 
     @Override
@@ -100,7 +88,6 @@ public class Conf {
                 ", name='" + name + '\'' +
                 ", place='" + place + '\'' +
                 ", date=" + date +
-                ", reports=" + reports +
                 '}';
     }
 }

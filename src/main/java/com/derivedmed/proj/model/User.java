@@ -3,7 +3,6 @@ package com.derivedmed.proj.model;
 import com.derivedmed.proj.util.annotations.Column;
 import com.derivedmed.proj.util.annotations.Model;
 
-import java.util.List;
 import java.util.Objects;
 
 @Model
@@ -24,9 +23,8 @@ public class User {
     @Column(name = "rating")
     private int rating;
 
-    private List<Report> reportList;
+    public User(){
 
-    public User() {
     }
 
     public User(int id, int role_id, String email, String password, int rating) {
@@ -77,12 +75,22 @@ public class User {
         this.rating = rating;
     }
 
-    public List<Report> getReportList() {
-        return reportList;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof User)) return false;
+        User user = (User) o;
+        return id == user.id &&
+                role_id == user.role_id &&
+                rating == user.rating &&
+                Objects.equals(email, user.email) &&
+                Objects.equals(password, user.password);
     }
 
-    public void setReportList(List<Report> reportList) {
-        this.reportList = reportList;
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(id, role_id, email, password, rating);
     }
 
     @Override
@@ -93,26 +101,6 @@ public class User {
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 ", rating=" + rating +
-                ", reportList=" + reportList +
                 '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof User)) return false;
-        User user = (User) o;
-        return id == user.id &&
-                role_id == user.role_id &&
-                rating == user.rating &&
-                Objects.equals(email, user.email) &&
-                Objects.equals(password, user.password) &&
-                Objects.equals(reportList, user.reportList);
-    }
-
-    @Override
-    public int hashCode() {
-
-        return Objects.hash(id, role_id, email, password, rating, reportList);
     }
 }
