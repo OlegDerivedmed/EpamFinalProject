@@ -8,6 +8,7 @@ import com.derivedmed.proj.services.RegistrationService;
 import com.derivedmed.proj.services.RegistrationServiceImpl;
 import com.derivedmed.proj.services.ReportService;
 import com.derivedmed.proj.services.ReportServiceImpl;
+import com.derivedmed.proj.services.Service;
 import com.derivedmed.proj.services.UserService;
 import com.derivedmed.proj.services.UserServiceImpl;
 import com.derivedmed.proj.util.annotations.Transactional;
@@ -17,6 +18,10 @@ import java.util.Arrays;
 public class ServiceFactory {
 
     private static ServiceFactory ourInstance = new ServiceFactory();
+    private static UserService userService = getService(UserServiceImpl.getInstance());
+    private static RegistrationService registrationService = getService(RegistrationServiceImpl.getInstance());
+    private static ReportService reportService = getService(ReportServiceImpl.getInstance());
+    private static ConfService confService = getService(ConfServiceImpl.getInstance());
 
     public static ServiceFactory getInstance() {
         return ourInstance;
@@ -25,40 +30,37 @@ public class ServiceFactory {
     private ServiceFactory() {
     }
 
-    public UserService getUserService() {
-        if (isTransactional(UserService.class)) {
-            ProxyService<UserService> userServ = new ProxyService<>(UserServiceImpl.getInstance());
-            return userServ.getProxy();
-        } else {
-            return UserServiceImpl.getInstance();
+    private static <T extends Service> T getService(T t){
+        Class<? extends Service> serviceClass = t.getClass();
+        if (isTransactional(serviceClass)){
+            ProxyService<T> proxyService = new ProxyService<>(t, serviceClass);
+            return proxyService.getProxy();
         }
-    }
-    public ConfService getConfService() {
-        if (isTransactional(ConfService.class)) {
-            ProxyService<ConfService> confServ = new ProxyService<>(ConfServiceImpl.getInstance());
-            return confServ.getProxy();
-        } else {
-            return ConfServiceImpl.getInstance();
-        }
-    }
-    public ReportService getReportService() {
-        if (isTransactional(ReportService.class)) {
-            ProxyService<ReportService> userServ = new ProxyService<>(ReportServiceImpl.getInstance());
-            return userServ.getProxy();
-        } else {
-            return ReportServiceImpl.getInstance();
-        }
-    }
-    public RegistrationService getRegistrationService() {
-        if (isTransactional(RegistrationService.class)) {
-            ProxyService<RegistrationService> registrationServiceProxyService = new ProxyService<>(RegistrationServiceImpl.getInstance());
-            return registrationServiceProxyService.getProxy();
-        } else {
-            return RegistrationServiceImpl.getInstance();
-        }
+        return t;
     }
 
-    private boolean isTransactional(Class clazz) {
-        return Arrays.stream(clazz.getMethods()).anyMatch(m->m.isAnnotationPresent(Transactional.class));
+    public static UserService getUserService() {
+        return userService;
+    }
+
+    public static RegistrationService getRegistrationService() {
+        return registrationService;
+    }
+
+    public static ServiceFactory getOurInstance() {
+        return ourInstance;
+    }
+
+    public static ReportService getReportService() {
+        return reportService;
+    }
+
+    public static ConfService getConfService() {
+        return confService;
+    }
+
+    private static boolean isTransactional(Class clazz) {
+        return Arrays.stream(clazz.getMethods())
+                .anyMatch(m->m.isAnnotationPresent(Transactional.class));
     }
 }

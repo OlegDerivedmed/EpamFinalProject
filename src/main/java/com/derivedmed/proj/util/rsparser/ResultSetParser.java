@@ -1,4 +1,4 @@
-package com.derivedmed.proj.rsparser;
+package com.derivedmed.proj.util.rsparser;
 
 import com.derivedmed.proj.util.annotations.Column;
 import com.derivedmed.proj.util.annotations.Model;
@@ -19,10 +19,11 @@ public class ResultSetParser {
     private ResultSetParser() {
     }
 
-    public Object parse(ResultSet rs, Class clazz) throws IllegalAccessException, SQLException, InstantiationException, NoSuchMethodException, InvocationTargetException {
-        ArrayList<Object> result = new ArrayList<>();
-        Object obj = clazz.getConstructor().newInstance();
-        if (!clazz.isAnnotationPresent(Model.class)) {
+    public <T> ArrayList<T> parse(ResultSet rs, T instance) throws IllegalAccessException, SQLException, InstantiationException, NoSuchMethodException, InvocationTargetException {
+        ArrayList<T> result = new ArrayList<>();
+        Class clazz = instance.getClass();
+        T resultUnit = instance;
+        if (!resultUnit.getClass().isAnnotationPresent(Model.class)) {
             throw new IllegalAccessException();
         }
         while (rs.next()) {
@@ -30,15 +31,12 @@ public class ResultSetParser {
                 if (f.isAnnotationPresent(Column.class)) {
                     String name = f.getAnnotation(Column.class).name();
                     f.setAccessible(true);
-                    f.set(obj, rs.getObject(name));
+                    f.set(resultUnit, rs.getObject(name));
                 }
             }
-            result.add(obj);
-            obj = clazz.getConstructor().newInstance();
+            result.add(resultUnit);
+            resultUnit = (T) clazz.getConstructor().newInstance();
         }
-        if (result.size()==1) {
-            return result.get(0);
-        }
-        else return result;
+        return result;
     }
 }

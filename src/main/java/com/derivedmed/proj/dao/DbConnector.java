@@ -29,7 +29,7 @@ public class DbConnector {
             properties.load(is);
             comboPooledDataSource.setDriverClass(properties.getProperty("jdbc_driver"));
         } catch (PropertyVetoException | IOException e) {
-            LOGGER.error("cant get properties", e);
+            LOGGER.error("cant getByID properties", e);
         }
 
         comboPooledDataSource.setJdbcUrl(properties.getProperty("url"));

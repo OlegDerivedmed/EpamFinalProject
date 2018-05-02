@@ -8,7 +8,8 @@ public class DaoFactory {
     private static final UserDao userDao = new UserDao();
     private static final ConfDao confDao = new ConfDao();
     private static final ReportDao reportDao = new ReportDao();
-    private static DaoFactory ourInstance = new DaoFactory();
+
+    private static final DaoFactory ourInstance = new DaoFactory();
 
     public static DaoFactory getInstance() {
         return ourInstance;

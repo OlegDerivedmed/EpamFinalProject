@@ -6,9 +6,9 @@ import java.lang.reflect.Proxy;
 public class ProxyService<T> implements Service{
     private Object proxy;
 
-    public ProxyService(Object o) {
-        InvocationHandler invocationHandler = new ServiceTransactionalProxy(o);
-        proxy = Proxy.newProxyInstance(Service.class.getClassLoader(), new Class[]{UserService.class,ConfService.class,RegistrationService.class,ReportService.class}, invocationHandler);
+    public ProxyService(Object object,Class clazz) {
+        InvocationHandler invocationHandler = new TransactionalInvocationHandler(object);
+        proxy = Proxy.newProxyInstance(Service.class.getClassLoader(), clazz.getInterfaces(), invocationHandler);
     }
 
     public T getProxy() {

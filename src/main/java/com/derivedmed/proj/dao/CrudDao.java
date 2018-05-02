@@ -7,7 +7,7 @@ public interface CrudDao<T> extends Dao{
 
     boolean create(T t);
 
-    T get(int id) throws NoSuchMethodException, InvocationTargetException;
+    T getByID(int id) throws NoSuchMethodException, InvocationTargetException;
 
     boolean update(T t);
 

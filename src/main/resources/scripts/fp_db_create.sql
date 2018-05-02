@@ -13,7 +13,7 @@ SET FOREIGN_KEY_CHECKS=1;
 
 create table confs
 (
-  conf_id              int not null,
+  conf_id              int not null AUTO_INCREMENT,
   conf_name            varchar(44) not null,
   conf_place           varchar(44) not null,
   conf_date            timestamp not null,
@@ -22,7 +22,7 @@ create table confs
 
 create table reports
 (
-  report_id            int not null,
+  report_id            int not null AUTO_INCREMENT,
   conf_id              int not null,
   report_name          varchar(22) not null,
   report_desk          varchar(255) not null,
@@ -38,7 +38,7 @@ create table roles
 
 create table users
 (
-  user_id              int not null,
+  user_id              int not null AUTO_INCREMENT,
   role_id              int not null,
   email                varchar(44) not null,
   password             varchar(44) not null,

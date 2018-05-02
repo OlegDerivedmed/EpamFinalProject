@@ -1,10 +1,12 @@
 package com.derivedmed.proj.dao;
 
 import com.derivedmed.proj.model.User;
-import com.derivedmed.proj.rsparser.ResultSetParser;
+import com.derivedmed.proj.util.rsparser.ResultSetParser;
 
 import java.lang.reflect.InvocationTargetException;
-import java.sql.*;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,14 +30,19 @@ public class UserDao implements CrudDao<User> {
     }
 
     @Override
-    public User get(int id) throws NoSuchMethodException, InvocationTargetException {
+    public User getByID(int id) throws NoSuchMethodException, InvocationTargetException {
         User user = new User();
         String SQL = "SELECT * from users where user_id = ?";
         try (ConnectionProxy connectionProxy = TransactionManager.getInstance().getConnection();
              PreparedStatement preparedStatement = connectionProxy
                      .prepareStatement(SQL)) {
             preparedStatement.setInt(1, id);
-            user = (User) ResultSetParser.getInstance().parse(preparedStatement.executeQuery(), User.class);
+            ArrayList<User> resultList = ResultSetParser.getInstance().parse(preparedStatement.executeQuery(), user);
+            if (resultList.size()!=0){
+                user =resultList.get(0);
+            }else {
+                System.out.println("No user with such id");
+            }
         } catch (SQLException | IllegalAccessException | InstantiationException e) {
             e.printStackTrace();
         }
@@ -63,7 +70,7 @@ public class UserDao implements CrudDao<User> {
     public boolean delete(int id) {
         try (ConnectionProxy connectionProxy = TransactionManager.getInstance().getConnection();
              PreparedStatement preparedStatement = connectionProxy.prepareStatement("delete from users where user_id =?")) {
-            preparedStatement.setInt(1,id);
+            preparedStatement.setInt(1, id);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -76,11 +83,11 @@ public class UserDao implements CrudDao<User> {
     public List<User> getAll() throws NoSuchMethodException, InvocationTargetException {
         ArrayList<User> resultList = new ArrayList<>();
         try (ConnectionProxy connectionProxy = TransactionManager.getInstance().getConnection();
-        PreparedStatement preparedStatement = connectionProxy.prepareStatement("select * from users")){
-            Object parserResult = ResultSetParser.getInstance().parse(preparedStatement.executeQuery(),User.class);
-            if (parserResult instanceof User){
+             PreparedStatement preparedStatement = connectionProxy.prepareStatement("select * from users")) {
+            Object parserResult = ResultSetParser.getInstance().parse(preparedStatement.executeQuery(), User.class);
+            if (parserResult instanceof User) {
                 resultList.add((User) parserResult);
-            }else {
+            } else {
                 resultList = (ArrayList<User>) parserResult;
             }
         } catch (SQLException | IllegalAccessException | InstantiationException e) {
@@ -91,8 +98,8 @@ public class UserDao implements CrudDao<User> {
 
     @Override
     public boolean clearAll() {
-        try(ConnectionProxy connectionProxy = TransactionManager.getInstance().getConnection();
-            Statement statement = connectionProxy.createStatement()) {
+        try (ConnectionProxy connectionProxy = TransactionManager.getInstance().getConnection();
+             Statement statement = connectionProxy.createStatement()) {
             statement.executeUpdate("DELETE FROM users");
         } catch (SQLException e) {
             e.printStackTrace();
@@ -100,13 +107,23 @@ public class UserDao implements CrudDao<User> {
         }
         return true;
     }
-
-    public boolean registerUserToReport(int user_id, int report_id){
+    public boolean checkUser(User user){
+        boolean result = false;
+        try (ConnectionProxy connectionProxy = TransactionManager.getInstance().getConnection();
+        PreparedStatement preparedStatement = connectionProxy.prepareStatement("select * from users where email = ?")){
+            preparedStatement.setString(1,user.getEmail());
+            result = preparedStatement.executeQuery().next();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+    public boolean registerUserToReport(int user_id, int report_id) {
         try {
             try (ConnectionProxy connectionProxy = TransactionManager.getInstance().getConnection();
-                 PreparedStatement preparedStatement = connectionProxy.prepareStatement("insert into users_reports (user_id, report_id) values(?, ?)")){
-                preparedStatement.setInt(1,user_id);
-                preparedStatement.setInt(2,report_id);
+                 PreparedStatement preparedStatement = connectionProxy.prepareStatement("insert into users_reports (user_id, report_id) values(?, ?)")) {
+                preparedStatement.setInt(1, user_id);
+                preparedStatement.setInt(2, report_id);
                 preparedStatement.executeUpdate();
             }
         } catch (SQLException e) {
@@ -119,8 +136,8 @@ public class UserDao implements CrudDao<User> {
     public List<User> getSpeakersByRating() throws NoSuchMethodException, InvocationTargetException {
         ArrayList<User> resultList = new ArrayList<>();
         try (ConnectionProxy connectionProxy = TransactionManager.getInstance().getConnection();
-             PreparedStatement preparedStatement = connectionProxy.prepareStatement("select * from users order by rating desc")){
-            resultList = (ArrayList<User>) ResultSetParser.getInstance().parse(preparedStatement.executeQuery(),User.class);
+             PreparedStatement preparedStatement = connectionProxy.prepareStatement("select * from users order by rating desc")) {
+            resultList = ResultSetParser.getInstance().parse(preparedStatement.executeQuery(), new User());
         } catch (SQLException | IllegalAccessException | InstantiationException e) {
             e.printStackTrace();
         }

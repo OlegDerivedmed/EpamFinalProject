@@ -6,19 +6,19 @@ import com.derivedmed.proj.util.annotations.Transactional;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 
-public class ServiceTransactionalProxy implements InvocationHandler {
+public class TransactionalInvocationHandler implements InvocationHandler {
 
     private TransactionManager transactionManager = TransactionManager.getInstance();
 
     private Object object;
 
-    public ServiceTransactionalProxy(Object object) {
+    public TransactionalInvocationHandler(Object object) {
         this.object = object;
     }
 
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-        if (method.isAnnotationPresent(Transactional.class)) {
+        if (isTransactional(method)) {
             System.out.println("transactional!");
             transactionManager.beginTransaction();
             Object result = method.invoke(object, args);
@@ -26,5 +26,10 @@ public class ServiceTransactionalProxy implements InvocationHandler {
             return result;
         }
         return method.invoke(object, args);
+    }
+
+    private boolean isTransactional(Method method) throws NoSuchMethodException {
+        Method realMethod = object.getClass().getMethod(method.getName(), method.getParameterTypes());
+        return realMethod.isAnnotationPresent(Transactional.class);
     }
 }

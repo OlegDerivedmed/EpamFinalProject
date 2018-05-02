@@ -1,7 +1,7 @@
 package com.derivedmed.proj.dao;
 
 import com.derivedmed.proj.model.Conf;
-import com.derivedmed.proj.rsparser.ResultSetParser;
+import com.derivedmed.proj.util.rsparser.ResultSetParser;
 
 import java.lang.reflect.InvocationTargetException;
 import java.sql.PreparedStatement;
@@ -30,14 +30,14 @@ public class ConfDao implements CrudDao<Conf> {
     }
 
     @Override
-    public Conf get(int id) throws NoSuchMethodException, InvocationTargetException {
+    public Conf getByID(int id) throws NoSuchMethodException, InvocationTargetException {
         Conf conf = new Conf();
         String SQL = "SELECT * from confs where conf_id = ?";
         try (ConnectionProxy connectionProxy = TransactionManager.getInstance().getConnection();
              PreparedStatement preparedStatement = connectionProxy
                      .prepareStatement(SQL)) {
             preparedStatement.setInt(1, id);
-            conf = (Conf) ResultSetParser.getInstance().parse(preparedStatement.executeQuery(), Conf.class);
+            conf = ResultSetParser.getInstance().parse(preparedStatement.executeQuery(), new Conf()).get(0);
         } catch (SQLException | IllegalAccessException | InstantiationException e) {
             e.printStackTrace();
         }
@@ -79,7 +79,7 @@ public class ConfDao implements CrudDao<Conf> {
         ArrayList<Conf> resultList = new ArrayList<>();
         try (ConnectionProxy connectionProxy = TransactionManager.getInstance().getConnection();
              PreparedStatement preparedStatement = connectionProxy.prepareStatement("select * from confs")){
-            resultList = (ArrayList<Conf>) ResultSetParser.getInstance().parse(preparedStatement.executeQuery(),Conf.class);
+            resultList = ResultSetParser.getInstance().parse(preparedStatement.executeQuery(),new Conf());
         } catch (SQLException | IllegalAccessException | InstantiationException e) {
             e.printStackTrace();
         }

@@ -20,6 +20,7 @@ public class ConnectionProxy implements AutoCloseable {
 
     public void setAutoCommit(boolean autoCommit) throws SQLException {
         connection.setAutoCommit(autoCommit);
+        connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
     }
 
     public void commit() throws SQLException {

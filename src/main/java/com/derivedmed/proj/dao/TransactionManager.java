@@ -3,7 +3,6 @@ package com.derivedmed.proj.dao;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.lang.reflect.Method;
 import java.sql.SQLException;
 
 public class TransactionManager {
