@@ -1,5 +1,7 @@
 package com.derivedmed.proj.dao;
 
+import com.mysql.jdbc.JDBC4Connection;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -20,7 +22,8 @@ public class ConnectionProxy implements AutoCloseable {
 
     public void setAutoCommit(boolean autoCommit) throws SQLException {
         connection.setAutoCommit(autoCommit);
-        connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+        connection.setTransactionIsolation(JDBC4Connection.TRANSACTION_READ_UNCOMMITTED);
+        System.out.println("Autocommit FALSE");
     }
 
     public void commit() throws SQLException {

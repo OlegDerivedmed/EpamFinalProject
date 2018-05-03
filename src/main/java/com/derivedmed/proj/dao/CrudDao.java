@@ -5,7 +5,7 @@ import java.util.List;
 
 public interface CrudDao<T> extends Dao{
 
-    boolean create(T t);
+    int create(T t);
 
     T getByID(int id) throws NoSuchMethodException, InvocationTargetException;
 

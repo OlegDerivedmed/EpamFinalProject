@@ -19,8 +19,8 @@ public class TransactionalInvocationHandler implements InvocationHandler {
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
         if (isTransactional(method)) {
-            System.out.println("transactional!");
             transactionManager.beginTransaction();
+            System.out.println("transactional!");
             Object result = method.invoke(object, args);
             transactionManager.commit();
             return result;

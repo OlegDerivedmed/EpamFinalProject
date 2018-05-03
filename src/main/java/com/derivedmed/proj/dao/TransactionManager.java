@@ -22,19 +22,19 @@ public class TransactionManager {
     ConnectionProxy getConnection() {
 
         if (currentConnection.get() == null) {
-            return new ConnectionProxy(dataSource.getConnection().get());
+            return new ConnectionProxy(dataSource.getConnection());
         } else {
             return provideConnection();
         }
 
     }
 
-    public void beginTransaction() {
+    public ConnectionProxy beginTransaction() {
 
         if (currentConnection.get() != null) {
             throw new IllegalStateException();
         }
-        provideConnection();
+        return provideConnection();
     }
 
     public void commit() {
@@ -73,7 +73,7 @@ public class TransactionManager {
             return currentConnection.get();
         }
 
-        currentConnection.set(new ConnectionProxy(dataSource.getConnection().get()));
+        currentConnection.set(new ConnectionProxy(dataSource.getConnection()));
         currentConnection.get().setTransactionActive(true);
 
         try {

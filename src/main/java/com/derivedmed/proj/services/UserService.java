@@ -18,4 +18,8 @@ public interface UserService extends Service{
     List<User> getAll() throws NoSuchMethodException, InvocationTargetException;
 
     boolean clearAll();
+
+    boolean updateUser(User user) throws InterruptedException;
+
+    boolean createAndUpdate(User user,String email);
 }

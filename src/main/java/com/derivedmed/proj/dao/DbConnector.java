@@ -37,11 +37,11 @@ public class DbConnector {
         comboPooledDataSource.setPassword(properties.getProperty("password"));
     }
 
-    public Optional<Connection> getConnection() {
-        Optional<Connection> connection = Optional.empty();
+    public Connection getConnection() {
+        Connection connection = null;
 
         try {
-            connection = Optional.of(comboPooledDataSource.getConnection());
+            connection = comboPooledDataSource.getConnection();
         } catch (SQLException e) {
             LOGGER.error("SQL-exception!", e);
         }
