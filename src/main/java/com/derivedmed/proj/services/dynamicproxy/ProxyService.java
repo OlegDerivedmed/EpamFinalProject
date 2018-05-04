@@ -1,9 +1,11 @@
-package com.derivedmed.proj.services;
+package com.derivedmed.proj.services.dynamicproxy;
+
+import com.derivedmed.proj.services.Service;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Proxy;
 
-public class ProxyService<T> implements Service{
+public class ProxyService<T> implements Service {
     private Object proxy;
 
     public ProxyService(Object object,Class clazz) {

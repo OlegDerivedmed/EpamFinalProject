@@ -1,4 +1,4 @@
-package com.derivedmed.proj.services;
+package com.derivedmed.proj.services.dynamicproxy;
 
 import com.derivedmed.proj.dao.TransactionManager;
 import com.derivedmed.proj.util.annotations.Transactional;

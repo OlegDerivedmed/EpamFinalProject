@@ -1,37 +1,18 @@
 package com.derivedmed.proj.test;
 
+import com.derivedmed.proj.dao.ConfDao;
+import com.derivedmed.proj.dao.ReportDao;
 import com.derivedmed.proj.dao.UserDao;
-import com.derivedmed.proj.factory.ServiceFactory;
-import com.derivedmed.proj.model.User;
+import com.derivedmed.proj.factory.DaoFactory;
 
 public class TestMain {
-    public static void main(String[] args) throws InterruptedException {
-            new Thread(()-> new UserDao().createUser(new User(4,"root","pass",2))).start();
-            new Thread(()-> new UserDao().createUser(new User(4,"root","pass",2))).start();
-            new Thread(()-> new UserDao().createUser(new User(4,"root","pass",2))).start();
-            new Thread(()-> new UserDao().createUser(new User(4,"root","pass",2))).start();
-            new Thread(()-> new UserDao().createUser(new User(4,"root","pass",2))).start();
-            new Thread(()-> new UserDao().createUser(new User(4,"root","pass",2))).start();
-
-    }
-
-    private static void checker(int id) {
-
-    }
-
-    static class Thready implements Runnable {
-        private final User user;
-        public Thready(User user) {
-            this.user = user;
-        }
-        @Override
-        public void run() {
-            user.setEmail("newEmail");
-            try {
-                ServiceFactory.getUserService().updateUser(user);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
+    public static void main(String[] args){
+        UserDao userDao = DaoFactory.getInstance().getUserDao();
+        ReportDao reportDao = DaoFactory.getInstance().getReportDao();
+        ConfDao confDao = DaoFactory.getInstance().getConfDao();
+//        for (Report report : reportDao.getAll()){
+//            userDao.registerUserToReport(1,report.getId());
+//        }
+        reportDao.offerReport(1,1,true);
     }
 }

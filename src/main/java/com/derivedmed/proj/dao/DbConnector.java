@@ -9,7 +9,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.Optional;
 import java.util.Properties;
 
 public class DbConnector {
@@ -19,6 +18,10 @@ public class DbConnector {
 
     private DbConnector() {
         initDataSource();
+    }
+
+    public static DbConnector getInstance() {
+        return instance;
     }
 
     private void initDataSource() {
@@ -47,9 +50,5 @@ public class DbConnector {
         }
 
         return connection;
-    }
-
-    public static DbConnector getInstance() {
-        return instance;
     }
 }

@@ -3,9 +3,7 @@ package com.derivedmed.proj.factory;
 
 import com.derivedmed.proj.services.ConfService;
 import com.derivedmed.proj.services.ConfServiceImpl;
-import com.derivedmed.proj.services.ProxyService;
-import com.derivedmed.proj.services.RegistrationService;
-import com.derivedmed.proj.services.RegistrationServiceImpl;
+import com.derivedmed.proj.services.dynamicproxy.ProxyService;
 import com.derivedmed.proj.services.ReportService;
 import com.derivedmed.proj.services.ReportServiceImpl;
 import com.derivedmed.proj.services.Service;

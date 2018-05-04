@@ -22,8 +22,7 @@ public class ConnectionProxy implements AutoCloseable {
 
     public void setAutoCommit(boolean autoCommit) throws SQLException {
         connection.setAutoCommit(autoCommit);
-        connection.setTransactionIsolation(JDBC4Connection.TRANSACTION_READ_UNCOMMITTED);
-        System.out.println("Autocommit FALSE");
+        connection.setTransactionIsolation(JDBC4Connection.TRANSACTION_REPEATABLE_READ);
     }
 
     public void commit() throws SQLException {

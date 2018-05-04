@@ -40,7 +40,7 @@ create table users
 (
   user_id              int not null AUTO_INCREMENT,
   role_id              int not null,
-  email                varchar(44) not null,
+  email                varchar(44) not null UNIQUE ,
   password             varchar(44) not null,
   rating               int DEFAULT 0,
   primary key (user_id)
@@ -50,10 +50,10 @@ create table users_reports
 (
   user_id              int not null,
   report_id            int not null,
-  active_speaker       bool DEFAULT TRUE ,
-  by_speaker           bool DEFAULT FALSE,
-  by_moder             bool DEFAULT FALSE,
-  confirmed            bool DEFAULT TRUE ,
+  active_speaker       BOOLEAN DEFAULT FALSE,
+  by_speaker           BOOLEAN DEFAULT FALSE,
+  by_moder             BOOLEAN DEFAULT FALSE,
+  confirmed            BOOLEAN DEFAULT FALSE,
   primary key (user_id, report_id)
 );
 

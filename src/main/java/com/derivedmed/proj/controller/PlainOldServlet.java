@@ -1,9 +1,6 @@
 package com.derivedmed.proj.controller;
 
 import com.derivedmed.proj.factory.ServiceFactory;
-import com.derivedmed.proj.services.ProxyService;
-import com.derivedmed.proj.services.UserService;
-import com.derivedmed.proj.services.UserServiceImpl;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
