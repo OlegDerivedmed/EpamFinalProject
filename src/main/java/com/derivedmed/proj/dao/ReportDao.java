@@ -153,15 +153,15 @@ public class ReportDao implements CrudDao<Report> {
         return reports;
     }
 
-    public boolean offerReport(int speaker_id, int report_id, boolean bySpeaker) {
+    public boolean offerReport(int speakerId, int reportId, boolean bySpeaker) {
         try (ConnectionProxy connectionProxy = TransactionManager.getInstance().getConnection();
              PreparedStatement preparedStatement = connectionProxy.prepareStatement(OFFER_REPORT_SQL)) {
             preparedStatement.setBoolean(1, false);
             preparedStatement.setBoolean(2, bySpeaker);
             preparedStatement.setBoolean(3, !bySpeaker);
             preparedStatement.setBoolean(4, false);
-            preparedStatement.setInt(5, speaker_id);
-            preparedStatement.setInt(6, report_id);
+            preparedStatement.setInt(5, speakerId);
+            preparedStatement.setInt(6, reportId);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             LOGGER.error(SQL_EXCEPTION, e);
@@ -170,13 +170,13 @@ public class ReportDao implements CrudDao<Report> {
         return true;
     }
 
-    public boolean confirmOffer(int speaker_id,int report_id) {
+    public boolean confirmOffer(int userId,int reportId) {
         try (ConnectionProxy connectionProxy = TransactionManager.getInstance().getConnection();
              PreparedStatement preparedStatement = connectionProxy.prepareStatement(CONFIRM_REPORT_SQL)) {
             preparedStatement.setBoolean(1, true);
             preparedStatement.setBoolean(2, true);
-            preparedStatement.setInt(3, speaker_id);
-            preparedStatement.setInt(4, report_id);
+            preparedStatement.setInt(3, userId);
+            preparedStatement.setInt(4, reportId);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             LOGGER.error(SQL_EXCEPTION, e);

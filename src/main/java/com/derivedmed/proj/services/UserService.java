@@ -1,25 +1,24 @@
 package com.derivedmed.proj.services;
 
 import com.derivedmed.proj.model.User;
-import com.derivedmed.proj.util.annotations.Transactional;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 public interface UserService extends Service{
 
-    @Transactional
-    void createUser(HttpServletRequest req, HttpServletResponse resp);
+    int createUser(User user);
 
-    User getUserByID(int id) throws NoSuchMethodException, InvocationTargetException;
+    User getUserByID(int id);
 
-    List<User> getAll() throws NoSuchMethodException, InvocationTargetException;
+    List<User> getAll();
 
     boolean clearAll();
 
-    boolean updateUser(User user) throws InterruptedException;
+    boolean updateUser(User user);
 
-    boolean createAndUpdate(User user,String email);
+    boolean delete(int id);
+
+    boolean registerUserToReport(int userId, int reportId);
+
+    List<User> getSpeakersByRating();
 }

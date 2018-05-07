@@ -1,9 +1,20 @@
 package com.derivedmed.proj.services;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import com.derivedmed.proj.model.Conf;
+
+import java.util.List;
 
 public interface ConfService extends Service {
 
-    void createConf(HttpServletRequest req, HttpServletResponse resp);
+    int createConf(Conf conf);
+
+    Conf getById(int id);
+
+    boolean update(Conf conf);
+
+    List<Conf> getAll();
+
+    boolean delete(int id);
+
+    boolean deleteAll();
 }

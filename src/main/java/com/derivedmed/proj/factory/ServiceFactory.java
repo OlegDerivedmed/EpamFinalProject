@@ -17,7 +17,6 @@ public class ServiceFactory {
 
     private static ServiceFactory ourInstance = new ServiceFactory();
     private static UserService userService = getService(UserServiceImpl.getInstance());
-    private static RegistrationService registrationService = getService(RegistrationServiceImpl.getInstance());
     private static ReportService reportService = getService(ReportServiceImpl.getInstance());
     private static ConfService confService = getService(ConfServiceImpl.getInstance());
 
@@ -39,10 +38,6 @@ public class ServiceFactory {
 
     public static UserService getUserService() {
         return userService;
-    }
-
-    public static RegistrationService getRegistrationService() {
-        return registrationService;
     }
 
     public static ServiceFactory getOurInstance() {
