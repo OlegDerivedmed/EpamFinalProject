@@ -18,10 +18,6 @@ public interface ReportService extends Service {
 
     List<Report> getAll();
 
-    List<Report> getPastReports();
-
-    List<Report> getUpcomingReports();
-
     List<Report> getByUserId(int id);
 
     boolean offerReport(int speakerId, int reportId, int roleId);

@@ -34,7 +34,7 @@ public class UserDao implements CrudDao<User> {
              PreparedStatement preparedStatement = connectionProxy
                      .prepareStatement(CREATE_SQL, Statement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setInt(1, user.getRole_id());
-            preparedStatement.setString(2, user.getEmail());
+            preparedStatement.setString(2, user.getLogin());
             preparedStatement.setString(3, user.getPassword());
             preparedStatement.executeUpdate();
             ResultSet id = preparedStatement.getGeneratedKeys();
@@ -70,7 +70,7 @@ public class UserDao implements CrudDao<User> {
     public boolean update(User user) {
         try (ConnectionProxy connection = TransactionManager.getInstance().getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_SQL)) {
-            preparedStatement.setString(1, user.getEmail());
+            preparedStatement.setString(1, user.getLogin());
             preparedStatement.setString(2, user.getPassword());
             preparedStatement.setInt(3, user.getRole_id());
             preparedStatement.setInt(4, user.getId());
@@ -159,5 +159,32 @@ public class UserDao implements CrudDao<User> {
             LOGGER.error(SQL_EXCEPTION,e);
         }
         return resultList;
+    }
+    public boolean authUser(String login, String password) {
+        boolean result = false;
+        try (ConnectionProxy connectionProxy = TransactionManager.getInstance().getConnection();
+             PreparedStatement preparedStatement = connectionProxy
+                     .prepareStatement("select * from users where email = ? and password = ?")) {
+            preparedStatement.setString(1,login);
+            preparedStatement.setString(2,password);
+            result = preparedStatement.executeQuery().next();
+        } catch (SQLException e) {
+            LOGGER.error(SQL_EXCEPTION, e);
+        }
+        return result;
+    }
+
+    public User getByLogin(String login){
+        User user = new User();
+        try (ConnectionProxy connectionProxy = TransactionManager.getInstance().getConnection();
+        PreparedStatement preparedStatement = connectionProxy
+                .prepareStatement("select * from users where email = ?")){
+            preparedStatement.setString(1,login);
+            user = ResultSetParser.getInstance().parse(preparedStatement.executeQuery(),new User()).get(0);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return user;
     }
 }

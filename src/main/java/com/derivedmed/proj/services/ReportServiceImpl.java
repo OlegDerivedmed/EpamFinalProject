@@ -52,16 +52,6 @@ public class ReportServiceImpl implements ReportService {
     }
 
     @Override
-    public List<Report> getPastReports() {
-        return DaoFactory.getInstance().getReportDao().getPastReports();
-    }
-
-    @Override
-    public List<Report> getUpcomingReports() {
-        return DaoFactory.getInstance().getReportDao().getUpcomingReports();
-    }
-
-    @Override
     public List<Report> getByUserId(int id) {
         return DaoFactory.getInstance().getReportDao().getReportsByUserId(id);
     }

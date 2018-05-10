@@ -21,4 +21,7 @@ public interface UserService extends Service{
     boolean registerUserToReport(int userId, int reportId);
 
     List<User> getSpeakersByRating();
+
+    boolean checkUser(String login, String password);
+    User getByLogin(String login);
 }

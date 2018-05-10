@@ -4,6 +4,7 @@ import com.derivedmed.proj.util.annotations.Column;
 import com.derivedmed.proj.util.annotations.Model;
 
 import java.sql.Timestamp;
+import java.util.List;
 import java.util.Objects;
 
 @Model
@@ -21,6 +22,15 @@ public class Conf {
     @Column(name = "conf_date")
     private Timestamp date;
 
+    private List<Report> reports;
+
+    public List<Report> getReports() {
+        return reports;
+    }
+
+    public void setReports(List<Report> reports) {
+        this.reports = reports;
+    }
 
     public Conf() {
     }

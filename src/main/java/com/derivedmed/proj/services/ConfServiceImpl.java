@@ -1,9 +1,13 @@
 package com.derivedmed.proj.services;
 
+import com.derivedmed.proj.dao.ConfDao;
+import com.derivedmed.proj.dao.ReportDao;
 import com.derivedmed.proj.factory.DaoFactory;
 import com.derivedmed.proj.model.Conf;
 
+import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ConfServiceImpl implements ConfService {
     private static ConfServiceImpl ourInstance = new ConfServiceImpl();
@@ -32,7 +36,21 @@ public class ConfServiceImpl implements ConfService {
 
     @Override
     public List<Conf> getAll() {
-        return DaoFactory.getInstance().getConfDao().getAll();
+        ConfDao confDao = DaoFactory.getInstance().getConfDao();
+        ReportDao reportDao = DaoFactory.getInstance().getReportDao();
+        List<Conf> confs = confDao.getAll();
+        for (Conf conf:confs){
+            conf.setReports(reportDao.getByConf(conf.getId()));
+        }
+//        List<Conf> result = new ArrayList<>();
+//        for (Conf conf : confs){
+//            if (conf.getDate().getTime()>new Date().getTime()){
+//                result.add(conf);
+//            }
+//        }
+        return confs.stream()
+                .filter(conf -> conf.getDate().getTime()>new Date().getTime())
+                .collect(Collectors.toList());
     }
 
     @Override

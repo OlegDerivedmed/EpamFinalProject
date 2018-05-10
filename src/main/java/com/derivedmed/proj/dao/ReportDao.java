@@ -29,6 +29,7 @@ public class ReportDao implements CrudDao<Report> {
     private final String GET_UPCOMING_REPORTS_SQL = "SELECT reports.report_id,conf_id, report_name,report_desk FROM reports JOIN confs c ON reports.conf_id = c.conf_id WHERE c.conf_date > ?;";
     private final String OFFER_REPORT_SQL = "update users_reports set active_speaker=?, by_speaker = ?, by_moder=? ,confirmed =? where user_id =? and report_id =?"; //FIXME wrong querry
     private final String CONFIRM_REPORT_SQL = "update users_reports set active_speaker = ?, confirmed = ? where user_id = ? and report_id = ?";
+    private final String GET_BY_CONF = "select * from reports where conf_id =?";
 
 
     @Override
@@ -183,5 +184,17 @@ public class ReportDao implements CrudDao<Report> {
             return false;
         }
         return true;
+    }
+
+    public List<Report> getByConf(int id){
+        List<Report> result = new ArrayList<>();
+        try (ConnectionProxy connectionProxy = TransactionManager.getInstance().getConnection();
+             PreparedStatement preparedStatement = connectionProxy.prepareStatement(GET_BY_CONF)) {
+            preparedStatement.setInt(1,id);
+            result = ResultSetParser.getInstance().parse(preparedStatement.executeQuery(),new Report());
+        } catch (SQLException e) {
+            LOGGER.error(SQL_EXCEPTION, e);
+        }
+        return result;
     }
 }

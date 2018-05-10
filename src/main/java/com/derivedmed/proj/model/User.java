@@ -15,7 +15,7 @@ public class User {
     private int role_id;
 
     @Column(name = "email")
-    private String email;
+    private String login;
 
     @Column(name = "password")
     private String password;
@@ -27,9 +27,9 @@ public class User {
 
     }
 
-    public User(int role_id, String email, String password, int rating) {
+    public User(int role_id, String login, String password, int rating) {
         this.role_id = role_id;
-        this.email = email;
+        this.login = login;
         this.password = password;
         this.rating = rating;
     }
@@ -50,12 +50,12 @@ public class User {
         this.role_id = role_id;
     }
 
-    public String getEmail() {
-        return email;
+    public String getLogin() {
+        return login;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setLogin(String login) {
+        this.login = login;
     }
 
     public String getPassword() {
@@ -82,14 +82,14 @@ public class User {
         return id == user.id &&
                 role_id == user.role_id &&
                 rating == user.rating &&
-                Objects.equals(email, user.email) &&
+                Objects.equals(login, user.login) &&
                 Objects.equals(password, user.password);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(id, role_id, email, password, rating);
+        return Objects.hash(id, role_id, login, password, rating);
     }
 
     @Override
@@ -97,7 +97,7 @@ public class User {
         return "User{" +
                 "id=" + id +
                 ", role_id=" + role_id +
-                ", email='" + email + '\'' +
+                ", login='" + login + '\'' +
                 ", password='" + password + '\'' +
                 ", rating=" + rating +
                 '}';
