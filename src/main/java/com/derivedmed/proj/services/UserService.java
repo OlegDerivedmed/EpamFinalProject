@@ -1,10 +1,12 @@
 package com.derivedmed.proj.services;
 
+import com.derivedmed.proj.model.Conf;
 import com.derivedmed.proj.model.User;
 
+import java.util.HashMap;
 import java.util.List;
 
-public interface UserService extends Service{
+public interface UserService extends Service {
 
     int createUser(User user);
 
@@ -23,5 +25,8 @@ public interface UserService extends Service{
     List<User> getSpeakersByRating();
 
     boolean checkUser(String login, String password);
+
     User getByLogin(String login);
+
+    HashMap<Integer, String> isUserRegistered(int userId, List<Conf> confs);
 }

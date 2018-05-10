@@ -2,24 +2,25 @@
 <html>
 <head>
     <title>Login Here</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"
+          integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
 </head>
 <body>
-<div class="login-form ">
+<div class="login-form" style="text-align: center;">
     <form action="/main" method="post">
         <h2 class="text-center">Log in</h2>
-        <div class="form-group  w-25 p-3">
+        <div class="form-group  w-25 p-3" style="margin: auto;">
             <input type="text" class="form-control" placeholder="Username" required="required" name="login">
         </div>
-        <div class="form-group  w-25 p-3 align-content-center">
+        <div class="form-group  w-25 p-3" style="margin: auto;">
             <input type="password" class="form-control" placeholder="Password" required="required" name="password">
         </div>
-        <div class="form-group w-25 p-3 align-content-center">
+        <div class="form-group w-25 p-3" style="margin: auto;">
             <input type="hidden" name="command" value="auth">
             <button type="submit" class="btn btn-dark">Log in</button>
         </div>
     </form>
-    <p style="color: red;">${requestScope.message}</p>
+    <p style="color: red;" class="text-center">${requestScope.message}</p>
     <p class="text-center"><a href="/main?command=registration">Create an Account</a></p>
 </div>
 

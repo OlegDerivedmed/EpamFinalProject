@@ -19,12 +19,12 @@ public class Registration implements ICommand {
         user.setPassword(req.getParameter("password"));
         user.setRole_id(4);
         int id = ServiceFactory.getUserService().createUser(user);
-        if (id!=0){
+        if (id != 0) {
             user.setId(id);
-            req.getSession().setAttribute("user",user);
+            req.getSession().setAttribute("user", user);
             return "pages/main.jsp";
         }
-        req.setAttribute("message","sorry,current login already taken");
+        req.setAttribute("message", "sorry,current login already taken");
         return "pages/registration.jsp";
     }
 }

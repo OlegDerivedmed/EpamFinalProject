@@ -60,18 +60,18 @@ public class ReportServiceImpl implements ReportService {
     public boolean offerReport(int speakerId, int reportId, int roleId) {
         ReportDao reportDao = DaoFactory.getInstance().getReportDao();
         boolean result = false;
-        if (roleId == 2){
-            result = reportDao.offerReport(speakerId,reportId,false);
+        if (roleId == 2) {
+            result = reportDao.offerReport(speakerId, reportId, false);
         }
-        if (roleId == 3){
-            result = reportDao.offerReport(speakerId,reportId,true);
+        if (roleId == 3) {
+            result = reportDao.offerReport(speakerId, reportId, true);
         }
         return result;
     }
 
     @Override
     public boolean confirmOffer(int userId, int reportId) {
-        return DaoFactory.getInstance().getReportDao().confirmOffer(userId,reportId);
+        return DaoFactory.getInstance().getReportDao().confirmOffer(userId, reportId);
     }
 
     @Override
@@ -83,8 +83,8 @@ public class ReportServiceImpl implements ReportService {
         Report report = reportDao.getByID(reportId);
         Conf conf = confDao.getByID(report.getConf_id());
         Timestamp timestamp = conf.getDate();
-        if (userDao.isSpeakerFreeThisDate(user,timestamp)){
-            return reportDao.confirmOffer(speakerId,reportId);
+        if (userDao.isSpeakerFreeThisDate(user, timestamp)) {
+            return reportDao.confirmOffer(speakerId, reportId);
         }
         return false;
     }

@@ -1,8 +1,13 @@
 package com.derivedmed.proj.services;
 
 import com.derivedmed.proj.factory.DaoFactory;
+import com.derivedmed.proj.factory.ServiceFactory;
+import com.derivedmed.proj.model.Conf;
+import com.derivedmed.proj.model.Report;
 import com.derivedmed.proj.model.User;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class UserServiceImpl implements UserService {
@@ -47,20 +52,43 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean registerUserToReport(int userId, int reportId) {
-        return DaoFactory.getInstance().getUserDao().registerUserToReport(userId,reportId);
+        return DaoFactory.getInstance().getUserDao().registerUserToReport(userId, reportId);
     }
 
     @Override
     public List<User> getSpeakersByRating() {
-        return DaoFactory.getInstance().getUserDao().getSpeakersByRating();    }
+        return DaoFactory.getInstance().getUserDao().getSpeakersByRating();
+    }
 
     @Override
     public boolean checkUser(String login, String password) {
-        return DaoFactory.getInstance().getUserDao().authUser(login,password);
+        return DaoFactory.getInstance().getUserDao().authUser(login, password);
     }
 
     @Override
     public User getByLogin(String login) {
         return DaoFactory.getInstance().getUserDao().getByLogin(login);
+    }
+
+    @Override
+    public HashMap<Integer, String> isUserRegistered(int userId, List<Conf> confs) {
+        ReportService reportService = ServiceFactory.getReportService();
+        List<Report> usersReports = reportService.getByUserId(userId);
+        List<Integer> reportsIds = new ArrayList<>();
+        for (Report r : usersReports) {
+            reportsIds.add(r.getId());
+        }
+        HashMap<Integer, String> isRegistered = new HashMap<>();
+        for (Conf conf : confs) {
+            for (Report report : conf.getReports()) {
+                int id = report.getId();
+                if (reportsIds.contains(id)) {
+                    isRegistered.put(id, "disabled");
+                } else {
+                    isRegistered.put(id, "");
+                }
+            }
+        }
+        return isRegistered;
     }
 }

@@ -171,7 +171,7 @@ public class ReportDao implements CrudDao<Report> {
         return true;
     }
 
-    public boolean confirmOffer(int userId,int reportId) {
+    public boolean confirmOffer(int userId, int reportId) {
         try (ConnectionProxy connectionProxy = TransactionManager.getInstance().getConnection();
              PreparedStatement preparedStatement = connectionProxy.prepareStatement(CONFIRM_REPORT_SQL)) {
             preparedStatement.setBoolean(1, true);
@@ -186,12 +186,12 @@ public class ReportDao implements CrudDao<Report> {
         return true;
     }
 
-    public List<Report> getByConf(int id){
+    public List<Report> getByConf(int id) {
         List<Report> result = new ArrayList<>();
         try (ConnectionProxy connectionProxy = TransactionManager.getInstance().getConnection();
              PreparedStatement preparedStatement = connectionProxy.prepareStatement(GET_BY_CONF)) {
-            preparedStatement.setInt(1,id);
-            result = ResultSetParser.getInstance().parse(preparedStatement.executeQuery(),new Report());
+            preparedStatement.setInt(1, id);
+            result = ResultSetParser.getInstance().parse(preparedStatement.executeQuery(), new Report());
         } catch (SQLException e) {
             LOGGER.error(SQL_EXCEPTION, e);
         }

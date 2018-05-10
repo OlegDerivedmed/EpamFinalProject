@@ -81,7 +81,7 @@ public class ConfDao implements CrudDao<Conf> {
             preparedStatement.setInt(1, id);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            LOGGER.error(SQL_EXCEPTION,e);
+            LOGGER.error(SQL_EXCEPTION, e);
             return false;
         }
         return true;

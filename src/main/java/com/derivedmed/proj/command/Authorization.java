@@ -13,13 +13,13 @@ public class Authorization implements ICommand {
         String login = req.getParameter("login");
         String password = req.getParameter("password");
         UserService userService = ServiceFactory.getUserService();
-        boolean isValid = userService.checkUser(login,password);
-        if (isValid){
+        boolean isValid = userService.checkUser(login, password);
+        if (isValid) {
             User user = userService.getByLogin(login);
-            req.getSession().setAttribute("user",user);
+            req.getSession().setAttribute("user", user);
             return "pages/main.jsp";
         }
-        req.setAttribute("message","invalid username or password");
+        req.setAttribute("message", "invalid username or password");
         return "pages/authorization.jsp";
     }
 }

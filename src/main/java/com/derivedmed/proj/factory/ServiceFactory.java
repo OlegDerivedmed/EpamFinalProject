@@ -27,9 +27,9 @@ public class ServiceFactory {
     private ServiceFactory() {
     }
 
-    private static <T extends Service> T getService(T t){
+    private static <T extends Service> T getService(T t) {
         Class<? extends Service> serviceClass = t.getClass();
-        if (isTransactional(serviceClass)){
+        if (isTransactional(serviceClass)) {
             ProxyService<T> proxyService = new ProxyService<>(t, serviceClass);
             return proxyService.getProxy();
         }
@@ -54,6 +54,6 @@ public class ServiceFactory {
 
     private static boolean isTransactional(Class clazz) {
         return Arrays.stream(clazz.getMethods())
-                .anyMatch(m->m.isAnnotationPresent(Transactional.class));
+                .anyMatch(m -> m.isAnnotationPresent(Transactional.class));
     }
 }

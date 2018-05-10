@@ -3,6 +3,7 @@ package com.derivedmed.proj.controller;
 import com.derivedmed.proj.command.Authorization;
 import com.derivedmed.proj.command.ICommand;
 import com.derivedmed.proj.command.LogOut;
+import com.derivedmed.proj.command.Main;
 import com.derivedmed.proj.command.RegisterToReport;
 import com.derivedmed.proj.command.Registration;
 import com.derivedmed.proj.command.UpcomingConfs;
@@ -20,9 +21,10 @@ public class CommandResolver {
         commands.put("registration", new Registration());
         commands.put("wrong", new WrongCommand());
         commands.put("upcoming", new UpcomingConfs());
-        commands.put("auth",new Authorization());
-        commands.put("regToRep",new RegisterToReport());
-        commands.put("logOut",new LogOut());
+        commands.put("auth", new Authorization());
+        commands.put("regToRep", new RegisterToReport());
+        commands.put("logOut", new LogOut());
+        commands.put("main", new Main());
     }
 
     public static CommandResolver getInstance() {

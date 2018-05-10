@@ -3,7 +3,7 @@ package com.derivedmed.proj.dao;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
-public interface CrudDao<T> extends Dao{
+public interface CrudDao<T> extends Dao {
 
     int create(T t);
 

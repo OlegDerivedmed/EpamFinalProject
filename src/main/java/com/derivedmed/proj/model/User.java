@@ -23,7 +23,7 @@ public class User {
     @Column(name = "rating")
     private int rating;
 
-    public User(){
+    public User() {
 
     }
 

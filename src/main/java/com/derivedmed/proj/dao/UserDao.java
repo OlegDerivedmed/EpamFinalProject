@@ -125,10 +125,10 @@ public class UserDao implements CrudDao<User> {
              PreparedStatement preparedStatement = connectionProxy.prepareStatement(CHECK_SPEAKER_ACTIV_BY_DATE_SQL)) {
             preparedStatement.setInt(1, user.getId());
             preparedStatement.setTimestamp(2, timestamp);
-            preparedStatement.setBoolean(3,true);
+            preparedStatement.setBoolean(3, true);
             result = preparedStatement.executeQuery().next();
         } catch (SQLException e) {
-            LOGGER.error(SQL_EXCEPTION,e);
+            LOGGER.error(SQL_EXCEPTION, e);
             return false;
         }
         return !result;
@@ -143,7 +143,7 @@ public class UserDao implements CrudDao<User> {
                 preparedStatement.executeUpdate();
             }
         } catch (SQLException e) {
-            LOGGER.error(SQL_EXCEPTION,e);
+            LOGGER.error(SQL_EXCEPTION, e);
             return false;
         }
         return true;
@@ -156,17 +156,18 @@ public class UserDao implements CrudDao<User> {
             preparedStatement.setInt(1, 3);
             resultList = ResultSetParser.getInstance().parse(preparedStatement.executeQuery(), new User());
         } catch (SQLException e) {
-            LOGGER.error(SQL_EXCEPTION,e);
+            LOGGER.error(SQL_EXCEPTION, e);
         }
         return resultList;
     }
+
     public boolean authUser(String login, String password) {
         boolean result = false;
         try (ConnectionProxy connectionProxy = TransactionManager.getInstance().getConnection();
              PreparedStatement preparedStatement = connectionProxy
                      .prepareStatement("select * from users where email = ? and password = ?")) {
-            preparedStatement.setString(1,login);
-            preparedStatement.setString(2,password);
+            preparedStatement.setString(1, login);
+            preparedStatement.setString(2, password);
             result = preparedStatement.executeQuery().next();
         } catch (SQLException e) {
             LOGGER.error(SQL_EXCEPTION, e);
@@ -174,13 +175,13 @@ public class UserDao implements CrudDao<User> {
         return result;
     }
 
-    public User getByLogin(String login){
+    public User getByLogin(String login) {
         User user = new User();
         try (ConnectionProxy connectionProxy = TransactionManager.getInstance().getConnection();
-        PreparedStatement preparedStatement = connectionProxy
-                .prepareStatement("select * from users where email = ?")){
-            preparedStatement.setString(1,login);
-            user = ResultSetParser.getInstance().parse(preparedStatement.executeQuery(),new User()).get(0);
+             PreparedStatement preparedStatement = connectionProxy
+                     .prepareStatement("select * from users where email = ?")) {
+            preparedStatement.setString(1, login);
+            user = ResultSetParser.getInstance().parse(preparedStatement.executeQuery(), new User()).get(0);
 
         } catch (SQLException e) {
             e.printStackTrace();
