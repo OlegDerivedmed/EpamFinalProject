@@ -6,7 +6,6 @@
 </head>
 <body>
 <%@include file="menu.jsp" %>
-<h3 class="text-center">Hello, epam</h3>
-
+<h3 class="text-center">Hello, <c:out value="${user.login}"/></h3>
 </body>
 </html>

@@ -5,6 +5,7 @@ import com.derivedmed.proj.factory.ServiceFactory;
 import com.derivedmed.proj.model.Conf;
 import com.derivedmed.proj.model.Report;
 import com.derivedmed.proj.model.User;
+import com.derivedmed.proj.util.annotations.Transactional;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -90,5 +91,27 @@ public class UserServiceImpl implements UserService {
             }
         }
         return isRegistered;
+    }
+    @Override
+    public HashMap<Integer, String> isUserVoted(int userId, List<Conf> confs) {
+        ReportService reportService = ServiceFactory.getReportService();
+        List<Integer> votedReports = reportService.votedByUser(userId);
+        HashMap<Integer, String> voted = new HashMap<>();
+        for (Conf conf : confs) {
+            for (Report report : conf.getReports()) {
+                if (votedReports.contains(report.getId())) {
+                    voted.put(report.getId(), "disabled");
+                } else {
+                    voted.put(report.getId(), "");
+                }
+            }
+        }
+        return voted;
+    }
+
+    @Transactional
+    @Override
+    public boolean vote(int user_id, int report_id, int rating){
+        return DaoFactory.getInstance().getUserDao().vote(user_id,report_id,rating);
     }
 }

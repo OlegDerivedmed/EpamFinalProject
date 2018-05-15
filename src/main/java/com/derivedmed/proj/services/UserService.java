@@ -28,5 +28,9 @@ public interface UserService extends Service {
 
     User getByLogin(String login);
 
+    boolean vote(int user_id, int report_id, int rating);
+
     HashMap<Integer, String> isUserRegistered(int userId, List<Conf> confs);
+
+    HashMap<Integer, String> isUserVoted(int userId, List<Conf> confs);
 }

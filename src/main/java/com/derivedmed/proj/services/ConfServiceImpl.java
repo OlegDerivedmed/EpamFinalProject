@@ -4,7 +4,11 @@ import com.derivedmed.proj.dao.ConfDao;
 import com.derivedmed.proj.dao.ReportDao;
 import com.derivedmed.proj.factory.DaoFactory;
 import com.derivedmed.proj.model.Conf;
+import com.derivedmed.proj.model.Report;
+import com.derivedmed.proj.model.Role;
+import com.derivedmed.proj.model.User;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -39,18 +43,43 @@ public class ConfServiceImpl implements ConfService {
         ConfDao confDao = DaoFactory.getInstance().getConfDao();
         ReportDao reportDao = DaoFactory.getInstance().getReportDao();
         List<Conf> confs = confDao.getAll();
-        for (Conf conf:confs){
+        for (Conf conf : confs) {
             conf.setReports(reportDao.getByConf(conf.getId()));
         }
-//        List<Conf> result = new ArrayList<>();
-//        for (Conf conf : confs){
-//            if (conf.getDate().getTime()>new Date().getTime()){
-//                result.add(conf);
-//            }
-//        }
-        return confs.stream()
-                .filter(conf -> conf.getDate().getTime()>new Date().getTime())
+        return confs;
+    }
+
+    @Override
+    public List<Conf> getUpcoming(User user) {
+        List<Conf> confs = getAll().stream()
+                .filter(conf -> conf.getDate().getTime() > new Date().getTime())
                 .collect(Collectors.toList());
+
+        if (user.getRole() == Role.MODERATOR || user.getRole() == Role.ADMINISTRATOR || user.getRole() == Role.SPEAKER) {
+            return confs;
+        }
+        List<Conf> result = new ArrayList<>();
+        for (Conf conf : confs) {
+            List<Report> reports = new ArrayList<>();
+            for (Report report : conf.getReports()) {
+                if (report.getSpeakerName() != null) {
+                    reports.add(report);
+                }
+            }
+            conf.setReports(reports);
+            if (!reports.isEmpty()) {
+                result.add(conf);
+            }
+        }
+        return result;
+    }
+
+    @Override
+    public List<Conf> getPast() {
+        List<Conf> result = getAll().stream()
+                .filter(conf -> conf.getDate().getTime() < new Date().getTime())
+                .collect(Collectors.toList());
+        return result;
     }
 
     @Override

@@ -19,6 +19,8 @@ public class Report {
     @Column(name = "report_desk")
     private String report_description;
 
+    private String speakerName;
+
     public Report() {
     }
 
@@ -27,6 +29,14 @@ public class Report {
         this.conf_id = conf_id;
         this.report_name = report_name;
         this.report_description = report_description;
+    }
+
+    public String getSpeakerName() {
+        return speakerName;
+    }
+
+    public void setSpeakerName(String speakerName) {
+        this.speakerName = speakerName;
     }
 
     public int getId() {
@@ -85,6 +95,7 @@ public class Report {
                 ", conf_id=" + conf_id +
                 ", report_name='" + report_name + '\'' +
                 ", report_description='" + report_description + '\'' +
+                ", speakerName='" + speakerName + '\'' +
                 '}';
     }
 }

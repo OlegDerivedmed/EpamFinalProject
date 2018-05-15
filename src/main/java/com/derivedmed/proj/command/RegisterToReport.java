@@ -18,7 +18,7 @@ public class RegisterToReport implements ICommand {
         UserService userService = ServiceFactory.getUserService();
         int report_id = Integer.parseInt(req.getParameter("reportId"));
         if (userService.registerUserToReport(user_id, report_id)) {
-            List<Conf> confs = ServiceFactory.getConfService().getAll();
+            List<Conf> confs = ServiceFactory.getConfService().getUpcoming(user);
             HashMap<Integer, String> isUserRegisteredForReport = userService.isUserRegistered(user.getId(), confs);
             req.getSession().setAttribute("isRegistered", isUserRegisteredForReport);
             req.setAttribute("confs", confs);

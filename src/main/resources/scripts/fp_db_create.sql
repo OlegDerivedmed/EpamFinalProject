@@ -18,7 +18,8 @@ create table confs
   conf_place           varchar(44) not null,
   conf_date            timestamp not null,
   primary key (conf_id)
-);
+)
+  CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 create table reports
 (
@@ -31,10 +32,11 @@ create table reports
 
 create table roles
 (
-  role_id              int not null,
+  role_id              int not null AUTO_INCREMENT,
   role_name            varchar(22) not null,
   primary key (role_id)
-);
+)
+  CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 create table users
 (
@@ -44,7 +46,8 @@ create table users
   password             varchar(44) not null,
   rating               int DEFAULT 0,
   primary key (user_id)
-);
+)
+  CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 create table users_reports
 (
@@ -54,8 +57,10 @@ create table users_reports
   by_speaker           BOOLEAN DEFAULT FALSE,
   by_moder             BOOLEAN DEFAULT FALSE,
   confirmed            BOOLEAN DEFAULT FALSE,
+  rating               int DEFAULT 0,
   primary key (user_id, report_id)
-);
+)
+  CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 alter table reports add constraint FK_Relationship_2 foreign key (conf_id)
 references confs (conf_id) on delete restrict on update restrict;

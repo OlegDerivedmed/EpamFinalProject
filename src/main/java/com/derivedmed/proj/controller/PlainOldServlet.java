@@ -8,7 +8,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 public class PlainOldServlet extends HttpServlet {
-    CommandResolver resolver = CommandResolver.getInstance();
+    private final CommandResolver resolver = CommandResolver.getInstance();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

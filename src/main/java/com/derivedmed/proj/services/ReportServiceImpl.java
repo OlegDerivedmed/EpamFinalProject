@@ -6,9 +6,11 @@ import com.derivedmed.proj.dao.UserDao;
 import com.derivedmed.proj.factory.DaoFactory;
 import com.derivedmed.proj.model.Conf;
 import com.derivedmed.proj.model.Report;
+import com.derivedmed.proj.model.Role;
 import com.derivedmed.proj.model.User;
 
 import java.sql.Timestamp;
+import java.util.HashMap;
 import java.util.List;
 
 public class ReportServiceImpl implements ReportService {
@@ -57,13 +59,18 @@ public class ReportServiceImpl implements ReportService {
     }
 
     @Override
-    public boolean offerReport(int speakerId, int reportId, int roleId) {
+    public List<Integer> votedByUser(int user_id) {
+        return DaoFactory.getInstance().getReportDao().votedByUser(user_id);
+    }
+
+    @Override
+    public boolean offerReport(int speakerId, int reportId, Role role) {
         ReportDao reportDao = DaoFactory.getInstance().getReportDao();
         boolean result = false;
-        if (roleId == 2) {
+        if (role == Role.MODERATOR) {
             result = reportDao.offerReport(speakerId, reportId, false);
         }
-        if (roleId == 3) {
+        if (role == Role.SPEAKER) {
             result = reportDao.offerReport(speakerId, reportId, true);
         }
         return result;
@@ -87,5 +94,17 @@ public class ReportServiceImpl implements ReportService {
             return reportDao.confirmOffer(speakerId, reportId);
         }
         return false;
+    }
+    @Override
+    public HashMap<String,Report> getReportsOfferedBySpeakerOrModer(int speakerid, boolean bySpeaker){
+        ReportDao reportDao = DaoFactory.getInstance().getReportDao();
+        ConfDao confDao = DaoFactory.getInstance().getConfDao();
+        HashMap<String,Report> result = new HashMap<>();
+        List<Report> reports = reportDao.getReportsOfferedBySpeakerOrModer(speakerid,bySpeaker);
+        for (Report report : reports){
+            String confName = confDao.getByID(report.getConf_id()).getName();
+            result.put(confName,report);
+        }
+        return result;
     }
 }

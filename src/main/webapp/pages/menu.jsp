@@ -7,28 +7,31 @@
           integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
 </head>
 <body class="hgu">
-<ul class="nav justify-content-center navbar-light bg-light">
+<ul class="nav justify-content-center navbar-light bg-light" style="margin-bottom: 10px;">
     <li class="btn btn-sm btn-light">
         <a class="nav-link" href="/main?command=main">Home</a>
-    </li>
-    <li class="btn btn-sm btn-light">
-        <a class="nav-link" href="#">My confs</a>
     </li>
     <li class="btn btn-sm btn-light">
         <a class="nav-link" href="/main?command=upcoming">Upcoming confs</a>
     </li>
     <li class="btn btn-sm btn-light">
-        <a class="nav-link" href="#">Past confs</a>
+        <a class="nav-link" href="/main?command=past">Past confs</a>
+    </li>
+    <li class="btn btn-sm btn-light">
+        <a class="nav-link" href="/main?command=myconfs">My confs</a>
     </li>
     <li class="btn btn-light btn-sm">
-        <a class="nav-link" href="#">Ratings</a>
+        <a class="nav-link" href="/main?command=ratings">Ratings</a>
     </li>
     <c:if test="${sessionScope.user.role_id==3}">
         <li class="btn btn-light btn-sm">
-            <a class="nav-link" href="#">Offer report</a>
+            <a class="nav-link" href="/main?command=offer">Offer report</a>
         </li>
         <li class="btn btn-light btn-sm">
-            <a class="nav-link" href="#">My bonuses</a>
+            <a class="nav-link" href="/main?command=mybonuses">My bonuses</a>
+        </li>
+        <li class="btn btn-light btn-sm">
+            <a class="nav-link" href="/main?command=myoffers">My offers</a>
         </li>
     </c:if>
     <c:if test="${sessionScope.user.role_id==1}">

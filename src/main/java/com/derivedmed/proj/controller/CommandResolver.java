@@ -4,9 +4,16 @@ import com.derivedmed.proj.command.Authorization;
 import com.derivedmed.proj.command.ICommand;
 import com.derivedmed.proj.command.LogOut;
 import com.derivedmed.proj.command.Main;
+import com.derivedmed.proj.command.MyBonuses;
+import com.derivedmed.proj.command.MyConfs;
+import com.derivedmed.proj.command.MyOffers;
+import com.derivedmed.proj.command.OfferBySpeaker;
+import com.derivedmed.proj.command.Past;
+import com.derivedmed.proj.command.Ratings;
 import com.derivedmed.proj.command.RegisterToReport;
 import com.derivedmed.proj.command.Registration;
 import com.derivedmed.proj.command.UpcomingConfs;
+import com.derivedmed.proj.command.Vote;
 import com.derivedmed.proj.command.WrongCommand;
 
 import javax.servlet.http.HttpServletRequest;
@@ -25,6 +32,13 @@ public class CommandResolver {
         commands.put("regToRep", new RegisterToReport());
         commands.put("logOut", new LogOut());
         commands.put("main", new Main());
+        commands.put("past",new Past());
+        commands.put("vote",new Vote());
+        commands.put("myconfs",new MyConfs());
+        commands.put("ratings",new Ratings());
+        commands.put("offer",new OfferBySpeaker());
+        commands.put("mybonuses",new MyBonuses());
+        commands.put("myoffers",new MyOffers());
     }
 
     public static CommandResolver getInstance() {

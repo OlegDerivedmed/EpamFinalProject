@@ -14,7 +14,7 @@ public class User {
     @Column(name = "role_id")
     private int role_id;
 
-    @Column(name = "email")
+    @Column(name = "login")
     private String login;
 
     @Column(name = "password")
@@ -22,6 +22,8 @@ public class User {
 
     @Column(name = "rating")
     private int rating;
+
+    private Role role;
 
     public User() {
 
@@ -32,6 +34,14 @@ public class User {
         this.login = login;
         this.password = password;
         this.rating = rating;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 
     public int getId() {
@@ -100,6 +110,7 @@ public class User {
                 ", login='" + login + '\'' +
                 ", password='" + password + '\'' +
                 ", rating=" + rating +
+                ", role=" + role +
                 '}';
     }
 }
